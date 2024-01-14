@@ -28,17 +28,24 @@ def calculate_efficiency(D):
     efficiency = P_out/(P_out + power_loss)
     return efficiency
 
+def mean_inductor_current(D):
+    global V_out, R_load
+    mean_current = V_out / (R_load * (1 - D))
+    return mean_current
+    
+
 D_values = np.linspace(0, 0.99, 1000)
 efficiency_values = []
+mean_inductor_current_values = []
 for D in D_values:
-    efficiency_values.append(calculate_efficiency(D))
+    #efficiency_values.append(calculate_efficiency(D))
+    mean_inductor_current_values.append(mean_inductor_current(D))
 
 plt.figure(figsize=(10, 6))
-plt.plot(D_values, efficiency_values)
-plt.title('Boost-converter Efficiency with ESR = 0.1 Ohms')
+plt.plot(D_values, mean_inductor_current_values)
+plt.title('Inductor mean current when ESR = 0.1 Ohms')
 plt.xlabel('Duty Cycle (D)')
-plt.ylabel('Efficiency')
-plt.legend()
+plt.ylabel('Current (A)')
+plt.ylim(0,25)
 plt.grid(True)
-plt.ylim(0,1)
 plt.show()
